@@ -29,10 +29,6 @@ const walletBalanceFormatted = ethBalance
   ? formatUnits(ethBalance.value, ethBalance.decimals)
   : '0'
 
-const walletBalanceFormatted = ethBalance
-  ? formatUnits(ethBalance.value, ethBalance.decimals)
-  : '0'
-
 const calculatedInvoiceAmount = ethBalance
   ? (Number(walletBalanceFormatted) / 1_000_000).toFixed(10)
   : '0'
