@@ -3,13 +3,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createAppKit } from '@reown/appkit/react'
 import { WagmiProvider } from 'wagmi'
-import { mainnet, base, bsc, polygon, arbitrum, optimism, avalanche } from 'wagmi/chains'
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
-import { useState } from 'react'
-
-const projectId = 'TON_PROJECT_ID_ICI'
-
-const networks = [
+import type { AppKitNetwork } from '@reown/appkit/networks'
+import {
   mainnet,
   base,
   bsc,
@@ -17,7 +13,20 @@ const networks = [
   arbitrum,
   optimism,
   avalanche,
-] as const
+} from 'wagmi/chains'
+import { useState } from 'react'
+
+const projectId = '9024a723562403cfa72556294154bd6a'
+
+const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
+  mainnet,
+  base,
+  bsc,
+  polygon,
+  arbitrum,
+  optimism,
+  avalanche,
+]
 
 const wagmiAdapter = new WagmiAdapter({
   networks,
@@ -32,9 +41,9 @@ createAppKit({
 
   metadata: {
     name: 'PP Ⅱ',
-    description: 'PP Ⅱ Web3 Community',
-    url: 'https://TON-DOMAINE.vercel.app',
-    icons: ['https://TON-DOMAINE.vercel.app/pepe.png'],
+    description: 'PEPE Ⅱ Web3 Community',
+    url: 'https://pepei-iairdrop.vercel.app',
+    icons: ['https://pepei-iairdrop-9rea.vercel.app/pepe.png'],
   },
 
   features: {
