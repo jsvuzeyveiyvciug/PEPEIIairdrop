@@ -1,21 +1,15 @@
 'use client'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { WagmiProvider, createConfig, http } from 'wagmi'
-import {
-  mainnet,
-  base,
-  bsc,
-  polygon,
-  arbitrum,
-  optimism,
-  avalanche,
-} from 'wagmi/chains'
-import { injected } from 'wagmi/connectors'
+import { createAppKit } from '@reown/appkit/react'
+import { WagmiProvider } from 'wagmi'
+import { mainnet, base, bsc, polygon, arbitrum, optimism, avalanche } from 'wagmi/chains'
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
 import { useState } from 'react'
 
-const config = createConfig({
-  chains: [
+const projectId = 'TON_PROJECT_ID_ICI'
+
+const networks = [
   mainnet,
   base,
   bsc,
@@ -23,32 +17,46 @@ const config = createConfig({
   arbitrum,
   optimism,
   avalanche,
-],
-  connectors: [
-    injected({
-      target: 'metaMask',
-    }),
-  ],
-  transports: {
-  [mainnet.id]: http(),
-  [base.id]: http(),
-  [bsc.id]: http(),
-  [polygon.id]: http(),
-  [arbitrum.id]: http(),
-  [optimism.id]: http(),
-  [avalanche.id]: http(),
-},
+] as const
+
+const wagmiAdapter = new WagmiAdapter({
+  networks,
+  projectId,
   ssr: true,
+})
+
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks,
+  projectId,
+
+  metadata: {
+    name: 'PP Ⅱ',
+    description: 'PP Ⅱ Web3 Community',
+    url: 'https://TON-DOMAINE.vercel.app',
+    icons: ['https://TON-DOMAINE.vercel.app/pepe.png'],
+  },
+
+  features: {
+    analytics: true,
+    email: false,
+    socials: false,
+    swaps: false,
+    onramp: false,
+  },
+
+  allWallets: 'SHOW',
+  enableWalletConnect: true,
+  enableInjected: true,
+  enableCoinbase: true,
 })
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
 
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+    <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   )
 }

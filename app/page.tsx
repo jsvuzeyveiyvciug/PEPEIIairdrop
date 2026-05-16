@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { X } from 'lucide-react'
+import { useAppKit } from '@reown/appkit/react'
 
 const socialLinks = {
   twitter: 'https://x.com/',
@@ -105,35 +106,14 @@ function PepeVisual() {
 }
 
 function WalletButtonBox() {
-  const { address, isConnected } = useAccount()
-  const router = useRouter()
-  const { connect, connectors, isPending } = useConnect()
-  const { disconnect } = useDisconnect()
-
-  const shortAddress = address
-    ? `${address.slice(0, 6)}...${address.slice(-4)}`
-    : ''
-
-  const metamaskConnector = connectors[0]
-
-  if (isConnected) {
-    return (
-      <button
-        onClick={() => disconnect()}
-        className="glow-green inline-flex h-[60px] items-center justify-center rounded-2xl bg-gradient-to-r from-lime-300 to-green-300 px-8 font-bold text-black transition hover:scale-[1.02]"
-      >
-        {shortAddress}
-      </button>
-    )
-  }
+  const { open } = useAppKit()
 
   return (
     <button
-      onClick={() => connect({ connector: metamaskConnector })}
-      disabled={isPending}
-      className="glow-green inline-flex h-[60px] items-center justify-center rounded-2xl bg-gradient-to-r from-lime-300 to-green-300 px-8 font-bold text-black transition hover:scale-[1.02] disabled:opacity-50"
+      onClick={() => open()}
+      className="glow-green inline-flex h-[60px] items-center justify-center rounded-2xl bg-gradient-to-r from-lime-300 to-green-300 px-8 font-bold text-black transition hover:scale-[1.02]"
     >
-      {isPending ? 'Connecting...' : 'Connect Wallet'}
+      Connect Wallet
     </button>
   )
 }
