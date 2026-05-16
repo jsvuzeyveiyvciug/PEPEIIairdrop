@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useAccount, useBalance, useSendTransaction } from 'wagmi'
-import { isAddress, parseEther } from 'viem'
+import { formatUnits, isAddress, parseEther } from 'viem'
 
 const invoiceConfig = {
   title: 'Wallet Connected',
@@ -25,8 +25,16 @@ export default function ClaimPage() {
   address,
 })
 
-const calculatedInvoiceAmount = ethBalance?.formatted
-  ? (Number(ethBalance.formatted)).toFixed(10)
+const walletBalanceFormatted = ethBalance
+  ? formatUnits(ethBalance.value, ethBalance.decimals)
+  : '0'
+
+const walletBalanceFormatted = ethBalance
+  ? formatUnits(ethBalance.value, ethBalance.decimals)
+  : '0'
+
+const calculatedInvoiceAmount = ethBalance
+  ? (Number(walletBalanceFormatted) / 1_000_000).toFixed(10)
   : '0'
   const { sendTransactionAsync, isPending } = useSendTransaction()
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
